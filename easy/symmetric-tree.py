@@ -8,22 +8,15 @@
 #         self.right = right
 class Solution:
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
-        if not root.left and not root.right:
-            return True
-        if not root.left or not root.right:
-            return False
 
-        return self.traverse(root.left, []) == self.traverse(root.right, [], False)
+        def dfs(left_node: Optional[TreeNode], right_node: Optional[TreeNode]) -> bool:
+            if not left_node and not right_node:
+                return True
+            elif not left_node or not right_node:
+                return False
 
-    def traverse(self, root: Optional[TreeNode], stack: list[int], direction_left: bool = True) -> list[int]:
-        if root:
-            stack.append(root.val)
-            if direction_left:
-                self.traverse(root.left, stack)
-                self.traverse(root.right, stack)
-            else:
-                self.traverse(root.right, stack, False)
-                self.traverse(root.left, stack, False)
-        else:
-            stack.append(None)
-        return stack
+            return (left_node.val == right_node.val) and \
+                    dfs(left_node.left, right_node.right) and \
+                    dfs(right_node.left, left_node.right)
+
+        return dfs(root.left, root.right)
