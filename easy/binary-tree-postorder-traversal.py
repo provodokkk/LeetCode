@@ -8,14 +8,16 @@
 #         self.right = right
 class Solution:
     def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        nums = []
+        stack, nums = [root], []
 
-        def dfs(node: Optional[TreeNode]) -> None:
-            if not node: 
-                return
-            dfs(node.left)
-            dfs(node.right)
+        while stack:
+            node = stack.pop()
+
+            if not node:
+                continue
+
             nums.append(node.val)
+            stack.append(node.left)
+            stack.append(node.right)            
 
-        dfs(root)
-        return nums
+        return nums[::-1]
