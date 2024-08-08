@@ -2,18 +2,17 @@
 
 class Solution:
     def isHappy(self, n: int) -> bool:
-        encountered_nums = set()
+        
+        def getSquared(n: int) -> int:
+            res = 0
+            while n:
+                res += (n % 10) ** 2
+                n //= 10
+            return res
 
-        while n != 1 and n not in encountered_nums:
-            encountered_nums.add(n)
-            n = self.get_next(n)
+        slow, fast = n, getSquared(n)
+        while slow != fast:
+            slow = getSquared(slow)
+            fast = getSquared(getSquared(fast))
 
-        return n == 1
-    
-    def get_next(self, number: int) -> int:
-        sum = 0
-        while number:
-            digit = number % 10
-            sum += digit ** 2
-            number //= 10
-        return sum
+        return slow == 1
